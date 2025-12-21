@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Endless Dark: Offline Crawler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <div class="game-wrapper">
+            <canvas id="gameCanvas" width="640" height="480"></canvas>
+            
+            <div id="mobile-controls">
+                <div class="dpad-row">
+                    <button class="btn-dpad" onclick="sendAction('up')">▲</button>
+                </div>
+                <div class="dpad-row">
+                    <button class="btn-dpad" onclick="sendAction('left')">◀</button>
+                    <button class="btn-dpad action" onclick="sendAction('wait')">⏳</button>
+                    <button class="btn-dpad" onclick="sendAction('right')">▶</button>
+                </div>
+                <div class="dpad-row">
+                    <button class="btn-dpad" onclick="sendAction('down')">▼</button>
+                </div>
+            </div>
+
+            <div class="controls desktop-only">Arrows/WASD to Move • Space to Rest • Click Items</div>
+        </div>
+
+        <div id="ui-col">
+            <div class="panel">
+                <div class="stat"><span id="floor-display">Town</span></div>
+                <div class="stat"><span>Level</span> <span id="level-display">1</span></div>
+                <div class="stat"><span>HP</span> <span id="hp-display" class="c-heal">100</span></div>
+                <div class="stat"><span>Rest</span> <span id="rest-display" class="c-magic">5</span></div>
+                <div class="stat"><span>Gold</span> <span id="gold-display" class="c-gold">0</span></div>
+                <div class="stat"><span>ATK</span> <span id="atk-display" class="c-atk">0</span></div>
+                <div class="stat"><span>DEF</span> <span id="def-display" class="c-def">0</span></div>
+            </div>
+
+            <div class="panel" id="equip-panel">
+                <div class="inv-label">Equipment</div>
+                <div class="equip-grid" id="equip-grid"></div>
+            </div>
+
+            <div class="panel" id="inventory-panel"></div>
+
+            <button class="btn" onclick="toggleMenu()">System Menu</button>
+        </div>
+    </div>
+
+    <div id="overlay-msg" class="overlay"><div class="modal-box"><div class="modal-title" id="msg-title">Message</div><p id="msg-text" style="color:#ccc;margin-bottom:20px;"></p><button class="btn" onclick="closeMsg()">OK</button></div></div>
+    <div id="overlay-confirm" class="overlay"><div class="modal-box"><div class="modal-title">Confirm</div><p id="confirm-text" style="color:#ccc;margin-bottom:20px;">Are you sure?</p><div style="display:flex;gap:10px;"><button class="btn btn-danger" id="btn-confirm-yes">Yes</button><button class="btn" onclick="closeConfirm()">No</button></div></div></div>
+    <div id="overlay-menu" class="overlay"><div class="modal-box"><div class="modal-title">System Menu</div><p style="color:#888;font-size:0.9rem;margin-bottom:20px;">Game Paused</p><button class="btn" id="btn-audio" onclick="toggleAudio()">Enable Audio</button><br><br><button class="btn btn-danger" onclick="requestWipe()">⚠ Clear Save Data</button><br><br><button class="btn" onclick="toggleMenu()">Resume</button></div></div>
+    <div id="overlay-death" class="overlay"><div class="modal-box" style="border-color:#800;"><div class="modal-title" style="color:#F00;">YOU DIED</div><p id="death-msg" style="color:#ccc;margin-bottom:20px;"></p><button class="btn btn-danger" onclick="wipeSaveImmediate()">Restart Journey</button></div></div>
+    <div id="overlay-shop" class="overlay"><div class="modal-box" style="width:400px;"><div class="modal-title" id="shop-title">Merchant</div><div class="shop-tabs"><div class="tab active" id="tab-buy" onclick="setShopMode('buy')">Buy</div><div class="tab" id="tab-sell" onclick="setShopMode('sell')">Sell</div></div><div id="shop-list" style="max-height:300px;overflow-y:auto;margin-bottom:10px;"></div><button class="btn" onclick="closeShop()">Leave Shop</button></div></div>
+    <div id="tooltip"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>
