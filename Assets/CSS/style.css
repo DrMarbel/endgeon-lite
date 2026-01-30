@@ -1,0 +1,87 @@
+body { background: #111; color: #eee; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; user-select: none; touch-action: manipulation; }
+
+/* Canvas Responsive Scaling */
+canvas { 
+    border: 2px solid #555; background: #000; box-shadow: 0 0 20px rgba(0,0,0,0.8); 
+    max-width: 100%; height: auto; display: block;
+    image-rendering: pixelated; /* Keeps pixel art crisp when scaling */
+}
+
+/* Layout */
+#game-container { display: flex; gap: 20px; align-items: flex-start; max-width: 100%; padding: 10px; box-sizing: border-box; }
+#ui-col { width: 240px; display: flex; flex-direction: column; gap: 10px; max-height: 90vh; overflow-y: auto; }
+.game-wrapper { position: relative; }
+
+/* Panels */
+.panel { background: #222; border: 1px solid #444; padding: 10px; }
+.stat { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9rem; }
+.controls { margin-top: 10px; color: #888; font-size: 0.8rem; text-align: center; }
+
+/* Mobile Controls (Hidden by default) */
+#mobile-controls { display: none; flex-direction: column; align-items: center; margin-top: 15px; gap: 5px; }
+.dpad-row { display: flex; gap: 5px; }
+.btn-dpad { 
+    width: 60px; height: 60px; background: #333; border: 2px solid #555; color: #fff; 
+    font-size: 1.5rem; border-radius: 10px; touch-action: manipulation; cursor: pointer;
+}
+.btn-dpad:active { background: #555; border-color: #888; }
+.btn-dpad.action { border-color: #0FF; color: #0FF; }
+
+/* Equipment Grid */
+.equip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.equip-slot { 
+    background: #151515; border: 1px solid #333; height: 32px; 
+    display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem; color: #555;
+}
+.equip-slot.filled { color: #FFF; border-color: #888; }
+.equip-label { font-size: 0.7rem; color: #666; margin-bottom: 2px; }
+
+/* Inventory */
+.inv-section { margin-bottom: 10px; }
+.inv-label { font-size: 0.8rem; color: #888; border-bottom: 1px solid #444; margin-bottom: 5px; }
+.inv-grid { display: flex; gap: 5px; flex-wrap: wrap; }
+.slot { 
+    width: 32px; height: 32px; background: #151515; border: 1px solid #333; 
+    display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;
+}
+.slot:hover { border-color: #888; }
+.item-icon { font-size: 1.2rem; }
+.item-count { position: absolute; bottom: 0; right: 2px; font-size: 0.7rem; color: #FFF; font-weight: bold; text-shadow: 1px 1px 0 #000; }
+.item-stack { position: absolute; top: 0; left: 2px; font-size: 0.7rem; color: #0FF; font-weight: bold; text-shadow: 1px 1px 0 #000; }
+
+/* Buttons & Overlays */
+.btn { background: #333; color: #fff; border: 1px solid #555; padding: 10px; cursor: pointer; width: 100%; font-family: monospace; margin-top: 5px; font-size: 1rem; }
+.btn:hover { background: #444; }
+.btn-danger { border-color: #A33; color: #F88; }
+.btn-buy { border-color: #DA0; color: #FFD700; width: auto; padding: 2px 8px; font-size: 0.8rem; }
+
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000; }
+.modal-box { background: #222; border: 1px solid #555; padding: 20px; width: 90%; max-width: 400px; box-shadow: 0 0 30px #000; text-align: center; }
+.modal-title { font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 5px; color: #FFF; }
+
+.shop-tabs { display: flex; gap: 5px; margin-bottom: 10px; }
+.tab { flex: 1; padding: 5px; background: #333; cursor: pointer; border: 1px solid #555; color: #888; }
+.tab.active { background: #444; color: #FFD700; border-color: #FFD700; }
+.shop-item { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 5px; margin-bottom: 5px; border: 1px solid #333; }
+.shop-details { text-align: left; font-size: 0.8rem; }
+.shop-price { color: #FFD700; font-weight: bold; }
+
+#tooltip { position: absolute; display: none; background: #333; border: 1px solid #fff; padding: 5px; font-size: 0.8rem; z-index: 2000; pointer-events: none; width: 180px; }
+.tt-title { color: #FFF; font-weight: bold; margin-bottom: 3px; }
+.tt-desc { color: #CCC; margin-bottom: 3px; }
+.tt-stat { color: #8F8; }
+.desktop-only { display: block; }
+
+/* Colors */
+.c-gold { color: #FFD700; } .c-heal { color: #0F0; } .c-magic { color: #0FF; } .c-atk { color: #F88; } .c-def { color: #88F; }
+
+/* RESPONSIVE BREAKPOINT */
+@media (max-width: 900px) {
+    body { height: auto; padding: 10px 0; justify-content: flex-start; }
+    #game-container { flex-direction: column; align-items: center; width: 100%; }
+    canvas { width: 100%; height: auto; }
+    #ui-col { width: 100%; max-height: none; overflow: visible; }
+    #mobile-controls { display: flex; }
+    .desktop-only { display: none; }
+    .modal-box { width: 90%; }
+}
