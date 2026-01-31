@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!--
-    Developer: Dr. Marbel, Philobyte
-    Date Started:
-    Date Modified: 01.30.2026
-  -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Endgeon</title>
@@ -63,12 +58,15 @@
     <div id="overlay-shop" class="overlay"><div class="modal-box" style="width:400px;"><div class="modal-title" id="shop-title">Merchant</div><div class="shop-tabs"><div class="tab active" id="tab-buy" onclick="setShopMode('buy')">Buy</div><div class="tab" id="tab-sell" onclick="setShopMode('sell')">Sell</div></div><div id="shop-list" style="max-height:300px;overflow-y:auto;margin-bottom:10px;"></div><button class="btn" onclick="closeShop()">Leave Shop</button></div></div>
     <div id="tooltip"></div>
 
-    <script src="Assets/JS/data/items.js"></script>
-    <script src="Assets/JS/main.js"></script>
-    <script src="Assets/JS/systems/audio.js"></script>
-    <script src="Assets/JS/systems/input.js"></script>
-    <script src="Assets/JS/systems/ui.js"></script>
-    <script src="Assets/JS/core/map.js"></script>
-    <script src="Assets/JS/core/combat.js"></script>
+    <script src="Assets/JS/Data/Items/items.js"></script>
+    <script src="Assets/JS/Enemy/Definitions/enemy_data.js"></script>
+    <script src="Assets/JS/Systems/Audio/audio.js"></script>
+    <script src="Assets/JS/Core/Engine/engine.js"></script>
+    <script src="Assets/JS/Systems/UI/ui.js"></script>
+    <script src="Assets/JS/Core/Map/map.js"></script>
+    <script src="Assets/JS/Systems/Spawner/spawner.js"></script>
+    <script src="Assets/JS/Core/Combat/combat.js"></script>
+    <script src="Assets/JS/Enemy/Behavior/behavior.js"></script>
+    <script src="Assets/JS/Systems/Input/input.js"></script>
 </body>
 </html>
