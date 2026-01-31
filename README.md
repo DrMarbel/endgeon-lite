@@ -28,4 +28,4 @@ Endgeon Lite is a compact, offline roguelike demo built with HTML5 canvas and va
 
 ## How to run
 
-Open `endgeonLite.html` in a modern browser. No build step required.
+Open `index.html` in a modern browser. No build step required.
