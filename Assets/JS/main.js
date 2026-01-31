@@ -137,7 +137,7 @@ function addToInventory(item) {
     }
 
     // 2. Try to find empty slot
-    let emptyIdx = inv.indexOf(null);
+    let emptyIdx = inv.findIndex(slot => slot === null || slot === undefined);
     if (emptyIdx !== -1) {
         inv[emptyIdx] = item;
         return true;
@@ -195,7 +195,7 @@ function useItem(cat, idx) {
     if (item.type === ITEM_TYPES.WEAPON || item.type === ITEM_TYPES.ARMOR || item.type === ITEM_TYPES.ACCESSORY || item.type === ITEM_TYPES.BAG) {
         let slot = item.slot || (item.type === ITEM_TYPES.WEAPON ? 'weapon' : null);
         if (slot) {
-            let oldItem = p.equipment[slot];
+            let oldItem = p.equipment[slot] || null;
             p.equipment[slot] = item;
             p.inv[cat][idx] = oldItem;
             addFloatingText("Equipped", p.x, p.y, "#FFF");
@@ -305,14 +305,21 @@ function loadGame() {
         globalState.player = { ...globalState.player, ...savedData.player };
         
         if (!globalState.player.equipment) globalState.player.equipment = { head:null, torso:null, arms:null, hands:null, legs:null, feet:null, neck:null, ring1:null, ring2:null, weapon: null, bag:null };
+        // Migration: Ensure all slots exist
+        else {
+            const keys = ['head','torso','arms','hands','legs','feet','neck','ring1','ring2','weapon','bag'];
+            keys.forEach(k => { if(globalState.player.equipment[k] === undefined) globalState.player.equipment[k] = null; });
+        }
         if (!globalState.player.stats) globalState.player.stats = { atk:0, def:0 };
         
-        // Fix stacks on old saves
+        // Fix stacks on old saves and undefined slots
         ['general','books','treasure'].forEach(c => {
              if(globalState.player.inv[c]) {
-                 globalState.player.inv[c].forEach(i => {
-                     if(i && i.stackable && !i.count) i.count = 1;
-                 });
+                 for(let i=0; i<globalState.player.inv[c].length; i++) {
+                     if(globalState.player.inv[c][i] === undefined) globalState.player.inv[c][i] = null;
+                     let item = globalState.player.inv[c][i];
+                     if(item && item.stackable && !item.count) item.count = 1;
+                 }
              }
         });
 
