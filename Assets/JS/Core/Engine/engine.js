@@ -2,8 +2,6 @@
 const TILE_SIZE = 32;
 const COLS = 20;
 const ROWS = 15;
-const MOBS_PER_LEVEL = 6;
-const ENEMY_VISION_RANGE = 7;
 const MAX_RESTS_PER_FLOOR = 5;
 const MAX_STACK = 16;
 
@@ -24,6 +22,7 @@ let particles = [];
 let shakeAmount = 0;
 let isPaused = false;
 let currentMerchant = null; // For shop tracking
+let enemyImg = new Image();
 
 let globalState = {
     player: { 
@@ -51,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function initGame() {
     canvas = document.getElementById('gameCanvas');
+    enemyImg.src = 'Assets/IMG/goo-v2.png';
     
     // SAFETY CHECK: If canvas is missing, stop here to prevent crash
     if (!canvas) {
@@ -325,6 +325,11 @@ function loadGame() {
 
         map = globalState.map || []; 
         entities = globalState.entities || [];
+
+        // Migration: Rename 'goblin' to 'goo'
+        entities.forEach(e => {
+            if (e.type === 'goblin') e.type = 'goo';
+        });
     } catch (e) {
         console.error("Save Corrupt", e);
         enterTown();
@@ -393,11 +398,22 @@ function draw() {
     
     // Entities
     entities.forEach(e => {
-        if(e.type === 'goblin') ctx.fillStyle = COLOR.ENEMY;
-        else if(e.type === 'dummy') ctx.fillStyle = COLOR.DUMMY;
-        else if(e.type === 'merchant') ctx.fillStyle = COLOR.NPC;
-        else if(e.type === 'fountain') ctx.fillStyle = COLOR.FOUNTAIN;
-        ctx.fillRect(e.x*TILE_SIZE+4, e.y*TILE_SIZE+4, TILE_SIZE-8, TILE_SIZE-8);
+        if (e.type === 'goo') {
+            if (enemyImg.complete && enemyImg.naturalHeight !== 0) {
+                ctx.drawImage(enemyImg, e.x * TILE_SIZE, e.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            } else {
+                // Fallback while loading
+                ctx.fillStyle = COLOR.ENEMY;
+                ctx.fillRect(e.x*TILE_SIZE+4, e.y*TILE_SIZE+4, TILE_SIZE-8, TILE_SIZE-8);
+            }
+        } else {
+            if(e.type === 'dummy') ctx.fillStyle = COLOR.DUMMY;
+            else if(e.type === 'merchant') ctx.fillStyle = COLOR.NPC;
+            else if(e.type === 'fountain') ctx.fillStyle = COLOR.FOUNTAIN;
+            else ctx.fillStyle = "#FFF"; // Default fallback
+            
+            ctx.fillRect(e.x*TILE_SIZE+4, e.y*TILE_SIZE+4, TILE_SIZE-8, TILE_SIZE-8);
+        }
     });
     
     // Player
