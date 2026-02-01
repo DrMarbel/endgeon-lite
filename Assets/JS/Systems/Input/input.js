@@ -36,25 +36,3 @@ function handleInput(e) {
     }
 }
 
-function movePlayer(dx, dy) {
-    let p = globalState.player;
-    let tx = p.x + dx, ty = p.y + dy;
-
-    // Boundary Check (Critical for mobile)
-    if (ty < 0 || ty >= ROWS || tx < 0 || tx >= COLS) return;
-
-    if (map[ty][tx] === TILE.WALL) return;
-
-    let entity = getEntityAt(tx, ty);
-    if (entity) {
-        interact(entity);
-    } else {
-        p.x = tx; p.y = ty;
-        let tile = map[ty][tx];
-        if (tile === TILE.STAIRS || tile === TILE.GATE) { enterNextFloor(); return; }
-        if (tile === TILE.PORTAL) { usePortal(); return; }
-    }
-    
-    if (p.floor > 0) processEnemyTurns();
-    saveGame();
-}
